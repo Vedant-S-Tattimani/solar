@@ -29,3 +29,4 @@ export default function Logo({ className = '', wordmarkColor = 'text-[#180102]' 
     </Link>
   );
 }
+

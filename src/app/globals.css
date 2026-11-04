@@ -5,11 +5,11 @@
   --color-canvas: #faf9f7;
   --color-surface: #f5f3f0;
   --color-surface-hover: #edeae4;
-  --color-border: #ded2c0;
-  --color-border-subtle: rgba(24, 1, 2, 0.08);
+  --color-border: rgba(24, 1, 2, 0.25);
+  --color-border-subtle: rgba(24, 1, 2, 0.1);
   --color-espresso: #180102;
-  --color-espresso-muted: rgba(24, 1, 2, 0.65);
-  --color-espresso-subtle: rgba(24, 1, 2, 0.45);
+  --color-espresso-muted: rgba(24, 1, 2, 0.58);
+  --color-espresso-subtle: rgba(24, 1, 2, 0.42);
   --color-accent: #f16b46;
   --color-accent-hover: #e0532e;
   --color-sand: #d9ceb6;
@@ -21,7 +21,8 @@
   --canvas-bg: #faf9f7;
   --surface-bg: #f5f3f0;
   --text-primary: #180102;
-  --border-color: #ded2c0;
+  --text-muted: rgba(24, 1, 2, 0.58);
+  --border-color: rgba(24, 1, 2, 0.25);
 }
 
 html {
@@ -41,7 +42,7 @@ body {
 /* Custom button shapes matching Framer */
 .btn-asymmetric {
   border-radius: 32px 8px 32px 32px;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s cubic-bezier(0.44, 0, 0.56, 1);
 }
 
 .btn-asymmetric:hover {
@@ -50,7 +51,7 @@ body {
 
 .btn-pill {
   border-radius: 9999px;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s cubic-bezier(0.44, 0, 0.56, 1);
 }
 
 .card-rounded {

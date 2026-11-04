@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Logo from './Logo';
 import { Menu, X, Phone } from 'lucide-react';
@@ -8,6 +8,25 @@ import { companyDetails } from '@/data/siteData';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > 180 && currentScrollY > lastScrollY.current + 5) {
+        // Scrolling down past threshold -> hide
+        setHidden(true);
+      } else if (currentScrollY < lastScrollY.current - 5 || currentScrollY < 80) {
+        // Scrolling up -> show
+        setHidden(false);
+      }
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navLinks = [
     { label: 'Solutions', href: '/#solutions' },
@@ -18,19 +37,23 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full pt-4 pb-2 px-4 md:px-8 max-w-[1240px] mx-auto">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 w-full pt-4 pb-2 px-4 md:px-8 max-w-[1240px] mx-auto transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        hidden ? '-translate-y-full' : 'translate-y-0'
+      }`}
+    >
       {/* Desktop Navigation */}
       <nav
         className="hidden lg:flex items-center justify-between gap-1 h-[60px]"
         aria-label="Main Navigation"
       >
         {/* Brand container */}
-        <div className="h-[60px] bg-[#f5f3f0] px-7 rounded-[12px_32px_32px_12px] flex items-center shrink-0 shadow-xs">
+        <div className="h-[60px] bg-[#f5f3f0] px-7 rounded-[12px_32px_32px_12px] flex items-center shrink-0">
           <Logo />
         </div>
 
         {/* Links container */}
-        <div className="h-[60px] bg-[#f5f3f0] px-7 rounded-[12px_32px_32px_12px] flex items-center gap-[30px] shadow-xs">
+        <div className="h-[60px] bg-[#f5f3f0] px-7 rounded-[12px_32px_32px_12px] flex items-center gap-[30px]">
           {navLinks.map((link) => (
             <Link
               key={link.label}
@@ -45,7 +68,7 @@ export default function Navbar() {
         {/* CTA Button */}
         <Link
           href="/#quote"
-          className="h-[60px] px-7 rounded-[32px_8px_32px_32px] bg-[#f16b46] hover:bg-[#e0532e] text-white text-[15px] font-semibold flex items-center justify-center shrink-0 shadow-xs transition-transform duration-200 hover:-translate-y-0.5"
+          className="h-[60px] px-7 rounded-[32px_8px_32px_32px] bg-[#f16b46] hover:bg-[#e0532e] text-[#180102] text-xs font-normal flex items-center justify-center shrink-0 transition-transform duration-200 hover:-translate-y-0.5"
         >
           Get a free quote
         </Link>
@@ -57,14 +80,14 @@ export default function Navbar() {
         aria-label="Mobile Navigation"
       >
         {/* Mobile Brand */}
-        <div className="h-[56px] bg-[#f5f3f0] px-4 rounded-[12px_28px_28px_12px] flex items-center shrink-0 shadow-xs">
+        <div className="h-[56px] bg-[#f5f3f0] px-4 rounded-[12px_28px_28px_12px] flex items-center shrink-0">
           <Logo />
         </div>
 
         <div className="flex items-center gap-2">
           <Link
             href="/#quote"
-            className="h-[48px] px-4 rounded-[24px_8px_24px_24px] bg-[#f16b46] text-white text-xs font-semibold flex items-center justify-center shadow-xs"
+            className="h-[48px] px-4 rounded-[24px_8px_24px_24px] bg-[#f16b46] text-[#180102] text-xs font-medium flex items-center justify-center"
           >
             Get a free quote
           </Link>
@@ -72,7 +95,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="w-[48px] h-[48px] rounded-full bg-[#f5f3f0] text-[#180102] hover:bg-[#edeae4] flex items-center justify-center transition-colors shadow-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-[#f16b46]"
+            className="w-[48px] h-[48px] rounded-full bg-[#f5f3f0] text-[#180102] hover:bg-[#edeae4] flex items-center justify-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#f16b46]"
             aria-expanded={mobileMenuOpen}
             aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
           >
@@ -83,14 +106,14 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden mt-3 p-6 bg-[#f5f3f0] border border-[#ded2c0] rounded-[28px] shadow-xl animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="lg:hidden mt-3 p-6 bg-[#f5f3f0] border border-[#180102]/15 rounded-[28px] shadow-xl animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="flex flex-col gap-4">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-lg font-medium text-[#180102] hover:text-[#f16b46] py-1.5 border-b border-[#ded2c0]/40 transition-colors"
+                className="text-lg font-medium text-[#180102] hover:text-[#f16b46] py-1.5 border-b border-[#180102]/10 transition-colors"
               >
                 {link.label}
               </Link>
@@ -99,7 +122,7 @@ export default function Navbar() {
             <div className="pt-2 flex flex-col gap-3">
               <a
                 href={companyDetails.phoneHref}
-                className="flex items-center justify-center gap-2 py-3 px-4 rounded-full border border-[#ded2c0] text-[#180102] font-semibold text-sm hover:bg-[#edeae4] transition-colors"
+                className="flex items-center justify-center gap-2 py-3 px-4 rounded-full border border-[#180102]/20 text-[#180102] font-semibold text-sm hover:bg-[#edeae4] transition-colors"
               >
                 <Phone className="w-4 h-4 text-[#f16b46]" />
                 {companyDetails.phone}
@@ -108,7 +131,7 @@ export default function Navbar() {
               <Link
                 href="/#quote"
                 onClick={() => setMobileMenuOpen(false)}
-                className="rounded-[32px_8px_32px_32px] flex items-center justify-center py-3.5 px-6 bg-[#f16b46] text-white font-semibold text-center text-sm shadow-md"
+                className="rounded-[32px_8px_32px_32px] flex items-center justify-center py-3.5 px-6 bg-[#f16b46] text-[#180102] font-semibold text-center text-sm shadow-md"
               >
                 Get a free quote
               </Link>

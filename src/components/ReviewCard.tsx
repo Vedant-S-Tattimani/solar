@@ -50,3 +50,4 @@ export default function ReviewCard({ review }: ReviewCardProps) {
     </div>
   );
 }
+

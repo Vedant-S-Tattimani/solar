@@ -17,6 +17,11 @@ export const metadata: Metadata = {
   title: 'Sunhearth — Solar Panels & Home Battery Installation',
   description:
     'Solar panels and home batteries — designed and installed by engineers who care about craft. 25-year warranty, NABCEP-certified crew, serving Pasadena and Southern California.',
+  icons: {
+    icon: '/icon.png',
+    shortcut: '/favicon.png',
+    apple: '/icon.png',
+  },
   keywords: [
     'solar panels',
     'home battery',
@@ -36,7 +41,7 @@ export const metadata: Metadata = {
     siteName: 'Sunhearth',
     images: [
       {
-        url: '/images/hero-house.jpg',
+        url: '/opengraph-image.jpg',
         width: 1200,
         height: 630,
         alt: 'Sunhearth — Solar Panels & Home Battery Installation',

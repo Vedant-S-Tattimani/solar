@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { AlertCircle, Loader2 } from 'lucide-react';
 
 export default function QuoteForm() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     monthlyBill: '$100 – $200',
     zip: '',
@@ -36,7 +38,7 @@ export default function QuoteForm() {
     e.preventDefault();
     if (formData.company) {
       // Bot detected via honeypot
-      setStatus('success');
+      router.push('/thank-you');
       return;
     }
 
@@ -65,6 +67,7 @@ export default function QuoteForm() {
       const data = await res.json();
       if (res.ok && data.success) {
         setStatus('success');
+        router.push('/thank-you');
       } else {
         setStatus('error');
         setErrorMessage(data.error || 'Failed to submit quote request. Please try again.');
@@ -75,57 +78,13 @@ export default function QuoteForm() {
     }
   };
 
-  if (status === 'success') {
-    return (
-      <div className="bg-[#f5f3f0] border border-[#ded2c0] rounded-[32px] p-8 md:p-12 text-center animate-in fade-in duration-300">
-        <div className="w-16 h-16 rounded-full bg-[#f16b46]/10 text-[#f16b46] mx-auto flex items-center justify-center mb-5">
-          <CheckCircle2 className="w-9 h-9" />
-        </div>
-        <h3 className="text-2xl md:text-3xl font-medium tracking-tight text-[#180102]">
-          Design request received!
-        </h3>
-        <p className="mt-3 text-[16px] text-[#180102]/80 max-w-md mx-auto leading-relaxed">
-          Thank you, <span className="font-semibold text-[#180102]">{formData.name}</span>. An engineer is reviewing your home in <span className="font-semibold">{formData.zip}</span> and will prepare your 3D design and month-by-month savings estimate within 24 hours.
-        </p>
-        <div className="mt-6 p-4 rounded-2xl bg-white/70 border border-[#ded2c0]/60 max-w-sm mx-auto text-xs text-[#180102]/70 text-left">
-          <p className="font-semibold text-[#180102] mb-1">Backend Dispatch Status:</p>
-          <p>• Contact phone: {formData.phone}</p>
-          <p>• Contact email: {formData.email}</p>
-          <p>• System priority: {formData.priority} ({formData.system})</p>
-          <p>• Notification dispatched to engineering queue.</p>
-        </div>
-        <button
-          type="button"
-          onClick={() => {
-            setStatus('idle');
-            setFormData({
-              monthlyBill: '$100 – $200',
-              zip: '',
-              name: '',
-              phone: '',
-              email: '',
-              priority: 'Lower my bills',
-              system: 'Help me choose',
-              message: '',
-              consent: true,
-              company: '',
-            });
-          }}
-          className="mt-6 text-sm font-semibold text-[#f16b46] hover:underline"
-        >
-          Submit another request
-        </button>
-      </div>
-    );
-  }
-
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-[#f5f3f0] border border-[#ded2c0] rounded-[32px] p-6 md:p-10 shadow-sm"
+      className="bg-[#f5f3f0] border border-[#180102]/15 rounded-[32px] p-6 md:p-10 shadow-xs"
       noValidate
     >
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-5">
         {/* Error alert */}
         {status === 'error' && (
           <div
@@ -137,173 +96,177 @@ export default function QuoteForm() {
           </div>
         )}
 
-        {/* Honey pot */}
-        <input
-          type="text"
-          name="company"
-          value={formData.company}
-          onChange={handleChange}
-          tabIndex={-1}
-          autoComplete="off"
-          className="hidden"
-          aria-hidden="true"
-        />
+        {/* Honeypot field - hidden */}
+        <div className="hidden" aria-hidden="true">
+          <label htmlFor="company">Company</label>
+          <input
+            type="text"
+            id="company"
+            name="company"
+            value={formData.company}
+            onChange={handleChange}
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </div>
 
-        {/* Row 1: Bill & ZIP */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div className="flex flex-col gap-2">
+        {/* Row 1: Monthly Electric Bill & Zip Code */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-1.5">
             <label
               htmlFor="monthlyBill"
               className="text-xs uppercase tracking-wider font-semibold text-[#180102]/60"
             >
-              Average monthly electric bill
+              Average monthly electric bill *
             </label>
             <select
               id="monthlyBill"
               name="monthlyBill"
               value={formData.monthlyBill}
               onChange={handleChange}
-              className="w-full h-12 px-4 rounded-xl bg-white border border-[#ded2c0] text-[#180102] text-sm focus:outline-none focus:ring-2 focus:ring-[#f16b46]"
+              className="w-full px-[18px] py-4 rounded-xl bg-white border border-[#180102]/20 text-[#180102] text-base font-medium focus:outline-none focus:ring-2 focus:ring-[#f16b46] transition-shadow"
             >
-              <option value="$100 – $200">$100 – $200</option>
               <option value="Under $100">Under $100</option>
-              <option value="$200 – $300">$200 – $300</option>
-              <option value="$300 – $500">$300 – $500</option>
-              <option value="Over $500">Over $500</option>
+              <option value="$100 – $200">$100 – $200</option>
+              <option value="$200 – $350">$200 – $350</option>
+              <option value="$350 – $500">$350 – $500</option>
+              <option value="$500+">$500+</option>
             </select>
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1.5">
             <label
               htmlFor="zip"
               className="text-xs uppercase tracking-wider font-semibold text-[#180102]/60"
             >
-              ZIP code <span className="text-[#f16b46]">*</span>
+              ZIP code (Southern California) *
             </label>
             <input
-              id="zip"
               type="text"
+              id="zip"
               name="zip"
               required
-              placeholder="91101"
+              placeholder="e.g. 91101"
+              pattern="[0-9]{5}"
+              maxLength={5}
               value={formData.zip}
               onChange={handleChange}
-              className="w-full h-12 px-4 rounded-xl bg-white border border-[#ded2c0] text-[#180102] text-sm placeholder-[#180102]/40 focus:outline-none focus:ring-2 focus:ring-[#f16b46]"
+              className="w-full px-[18px] py-4 rounded-xl bg-white border border-[#180102]/20 text-[#180102] text-base font-medium placeholder-[#180102]/40 focus:outline-none focus:ring-2 focus:ring-[#f16b46] transition-shadow"
             />
           </div>
         </div>
 
-        {/* Row 2: Name */}
-        <div className="flex flex-col gap-2">
-          <label
-            htmlFor="name"
-            className="text-xs uppercase tracking-wider font-semibold text-[#180102]/60"
-          >
-            Full name <span className="text-[#f16b46]">*</span>
-          </label>
-          <input
-            id="name"
-            type="text"
-            name="name"
-            required
-            placeholder="Jane Cooper"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full h-12 px-4 rounded-xl bg-white border border-[#ded2c0] text-[#180102] text-sm placeholder-[#180102]/40 focus:outline-none focus:ring-2 focus:ring-[#f16b46]"
-          />
-        </div>
+        {/* Row 2: Full Name & Phone */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-1.5">
+            <label
+              htmlFor="name"
+              className="text-xs uppercase tracking-wider font-semibold text-[#180102]/60"
+            >
+              Full name *
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              placeholder="Elena Rostova"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full px-[18px] py-4 rounded-xl bg-white border border-[#180102]/20 text-[#180102] text-base font-medium placeholder-[#180102]/40 focus:outline-none focus:ring-2 focus:ring-[#f16b46] transition-shadow"
+            />
+          </div>
 
-        {/* Row 3: Phone & Email */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1.5">
             <label
               htmlFor="phone"
               className="text-xs uppercase tracking-wider font-semibold text-[#180102]/60"
             >
-              Phone <span className="text-[#f16b46]">*</span>
+              Phone number *
             </label>
             <input
-              id="phone"
               type="tel"
+              id="phone"
               name="phone"
               required
-              placeholder="(555) 123-4567"
+              placeholder="(626) 555-0192"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full h-12 px-4 rounded-xl bg-white border border-[#ded2c0] text-[#180102] text-sm placeholder-[#180102]/40 focus:outline-none focus:ring-2 focus:ring-[#f16b46]"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="email"
-              className="text-xs uppercase tracking-wider font-semibold text-[#180102]/60"
-            >
-              Email <span className="text-[#f16b46]">*</span>
-            </label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              required
-              placeholder="jane@email.com"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full h-12 px-4 rounded-xl bg-white border border-[#ded2c0] text-[#180102] text-sm placeholder-[#180102]/40 focus:outline-none focus:ring-2 focus:ring-[#f16b46]"
+              className="w-full px-[18px] py-4 rounded-xl bg-white border border-[#180102]/20 text-[#180102] text-base font-medium placeholder-[#180102]/40 focus:outline-none focus:ring-2 focus:ring-[#f16b46] transition-shadow"
             />
           </div>
         </div>
 
-        {/* Row 4: Priority & System */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div className="flex flex-col gap-2">
+        {/* Row 3: Email */}
+        <div className="flex flex-col gap-1.5">
+          <label
+            htmlFor="email"
+            className="text-xs uppercase tracking-wider font-semibold text-[#180102]/60"
+          >
+            Email address *
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="elena@example.com"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full px-[18px] py-4 rounded-xl bg-white border border-[#180102]/20 text-[#180102] text-base font-medium placeholder-[#180102]/40 focus:outline-none focus:ring-2 focus:ring-[#f16b46] transition-shadow"
+          />
+        </div>
+
+        {/* Row 4: Primary Goal & Desired Tier */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-1.5">
             <label
               htmlFor="priority"
               className="text-xs uppercase tracking-wider font-semibold text-[#180102]/60"
             >
-              What matters most?
+              Primary goal
             </label>
             <select
               id="priority"
               name="priority"
               value={formData.priority}
               onChange={handleChange}
-              className="w-full h-12 px-4 rounded-xl bg-white border border-[#ded2c0] text-[#180102] text-sm focus:outline-none focus:ring-2 focus:ring-[#f16b46]"
+              className="w-full px-[18px] py-4 rounded-xl bg-white border border-[#180102]/20 text-[#180102] text-base font-medium focus:outline-none focus:ring-2 focus:ring-[#f16b46] transition-shadow"
             >
-              <option value="Lower my bills">Lower my bills</option>
-              <option value="Backup during outages">Backup during outages</option>
-              <option value="Full energy independence">Full energy independence</option>
-              <option value="Charging my EV">Charging my EV</option>
-              <option value="Not sure yet">Not sure yet</option>
+              <option value="Lower my bills">Lower my electric bills</option>
+              <option value="Blackout protection">Blackout & outage protection</option>
+              <option value="Whole home backup">Whole-home power backup</option>
+              <option value="EV charging">Power an EV with sunshine</option>
+              <option value="Full independence">Maximum grid independence</option>
             </select>
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1.5">
             <label
               htmlFor="system"
               className="text-xs uppercase tracking-wider font-semibold text-[#180102]/60"
             >
-              System you’re interested in
+              System of interest
             </label>
             <select
               id="system"
               name="system"
               value={formData.system}
               onChange={handleChange}
-              className="w-full h-12 px-4 rounded-xl bg-white border border-[#ded2c0] text-[#180102] text-sm focus:outline-none focus:ring-2 focus:ring-[#f16b46]"
+              className="w-full px-[18px] py-4 rounded-xl bg-white border border-[#180102]/20 text-[#180102] text-base font-medium focus:outline-none focus:ring-2 focus:ring-[#f16b46] transition-shadow"
             >
-              <option value="Help me choose">Help me choose</option>
-              <option value="Backup Essentials">Backup Essentials</option>
-              <option value="Solar Starter">Solar Starter</option>
-              <option value="Solar + Storage">Solar + Storage</option>
-              <option value="Whole-Home Independence">Whole-Home Independence</option>
-              <option value="Off-Grid Estate">Off-Grid Estate</option>
+              <option value="Help me choose">Not sure — help me choose</option>
+              <option value="Backup Essentials">Backup Essentials (Tier 1)</option>
+              <option value="Solar Starter">Solar Starter (Tier 2)</option>
+              <option value="Solar + Storage">Solar + Storage (Tier 3 · Recommended)</option>
+              <option value="Whole-Home Independence">Whole-Home Independence (Tier 4)</option>
+              <option value="Off-Grid Estate">Off-Grid Estate (Tier 5)</option>
             </select>
           </div>
         </div>
 
         {/* Row 5: Notes / Message */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1.5">
           <label
             htmlFor="message"
             className="text-xs uppercase tracking-wider font-semibold text-[#180102]/60"
@@ -317,7 +280,7 @@ export default function QuoteForm() {
             placeholder="Roof type, EV plans, outages in your area…"
             value={formData.message}
             onChange={handleChange}
-            className="w-full p-4 rounded-xl bg-white border border-[#ded2c0] text-[#180102] text-sm placeholder-[#180102]/40 focus:outline-none focus:ring-2 focus:ring-[#f16b46] resize-none"
+            className="w-full px-[18px] py-4 rounded-xl bg-white border border-[#180102]/20 text-[#180102] text-base font-medium placeholder-[#180102]/40 focus:outline-none focus:ring-2 focus:ring-[#f16b46] resize-none transition-shadow"
           />
         </div>
 
@@ -329,21 +292,21 @@ export default function QuoteForm() {
             name="consent"
             checked={formData.consent}
             onChange={handleChange}
-            className="w-4 h-4 mt-0.5 rounded text-[#f16b46] border-[#ded2c0] focus:ring-[#f16b46]"
+            className="w-4 h-4 mt-0.5 rounded text-[#f16b46] border-[#180102]/25 focus:ring-[#f16b46]"
           />
           <label htmlFor="consent" className="text-xs leading-relaxed text-[#180102]/70">
             I agree to be contacted by Sunhearth about my free design. We never share your details.
           </label>
         </div>
 
-        {/* Submit */}
+        {/* Submit Button (border-radius: 32px 8px 8px 32px; padding: 20px 28px) */}
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="btn-asymmetric w-full py-4 px-6 bg-[#f16b46] hover:bg-[#e0532e] text-white font-semibold text-base shadow-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
+          className="w-full py-5 px-7 rounded-[32px_8px_8px_32px] bg-[#f16b46] hover:bg-[#e0532e] text-[#180102] font-medium text-sm shadow-xs flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-70 transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0"
         >
-          {status === 'loading' && <Loader2 className="w-5 h-5 animate-spin" />}
-          {status === 'loading' ? 'Preparing design request…' : 'Get my free design'}
+          {status === 'loading' && <Loader2 className="w-5 h-5 animate-spin text-[#180102]" />}
+          <span>{status === 'loading' ? 'Preparing design request…' : 'Get my free design'}</span>
         </button>
       </div>
     </form>

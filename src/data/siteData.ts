@@ -197,3 +197,4 @@ export const companyDetails = {
   slogan: 'Calm, independent energy for the homes — and the people — you love.',
   subSlogan: 'Designed and installed by our own crews in Pasadena, CA.',
 };
+
