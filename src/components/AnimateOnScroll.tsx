@@ -36,3 +36,4 @@ export function AnimateOnScroll({
     </motion.div>
   );
 }
+
