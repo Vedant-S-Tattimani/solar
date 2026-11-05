@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     title: 'Sunhearth — Solar Panels & Home Battery Installation',
     description:
       'A home that never goes dark. Powered by sunshine. Solar panels and home batteries designed and installed by our own licensed crews.',
-    url: 'https://sunhearth.framer.website/',
+    url: 'https://k-tech-bgm.vercel.app/',
     siteName: 'Sunhearth',
     images: [
       {
