@@ -39,7 +39,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom button shapes matching Framer */
+/* Custom button shapes */
 .btn-asymmetric {
   border-radius: 32px 8px 32px 32px;
   transition: all 0.2s cubic-bezier(0.44, 0, 0.56, 1);

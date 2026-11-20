@@ -1,11 +1,11 @@
 import fs from 'fs';
 import path from 'path';
 
-// Serves the Framer CMS binaries (Solutions + Reviews collections) locally.
-// The Framer runtime requests byte ranges via `?range=from-to,from-to` and
+// Serves the CMS binaries (Solutions + Reviews collections) locally.
+// The site runtime requests byte ranges via `?range=from-to,from-to` and
 // expects the requested slices concatenated in the response body.
 
-const CMS_ROOT = path.join(process.cwd(), 'src', 'data', 'framer-cms');
+const CMS_ROOT = path.join(process.cwd(), 'src', 'data', 'cms-data');
 const SEGMENT = /^[A-Za-z0-9_-][A-Za-z0-9_.-]*$/;
 
 function parseRanges(param: string, size: number): Array<[number, number]> | null {
@@ -30,7 +30,7 @@ export async function GET(
   if (
     !segments?.length ||
     !segments.every((s) => SEGMENT.test(s)) ||
-    !segments[segments.length - 1].endsWith('.framercms')
+    !segments[segments.length - 1].endsWith('.bin')
   ) {
     return new Response('Not found', { status: 404 });
   }

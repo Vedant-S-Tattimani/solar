@@ -5,7 +5,7 @@ import { faqs, companyDetails } from '@/data/siteData';
 import { Plus, Minus, Phone } from 'lucide-react';
 
 export default function FaqAccordion() {
-  // First item open by default like Framer reference
+  // First item open by default
   const [openIds, setOpenIds] = useState<string[]>([faqs[0].id]);
 
   const toggleItem = (id: string) => {

@@ -1,2 +1,0 @@
-import{t as e}from"./rolldown-runtime.Dh6celcD.mjs";function t(e,t){return{description:`K-Tech Solar designs smart solar systems that erase your electricity bill for years. Solar, wind, water heating and heat pumps — get an instant quote and go solar today.`,favicon:`https://framerusercontent.com/assets/eI17PmGTsp0JtazKLhaVw5wSnU.png`,robots:`max-image-preview:large`,socialImage:`https://framerusercontent.com/assets/fAMzNkRvmLE3bKfGpzAM8Mfg.jpg`,title:`K-Tech Solar — Own the Power.`}}var n=e((()=>{}));export{t as n,n as t};
-//# sourceMappingURL=siteMetadata.D9rrOnGV.mjs.map
