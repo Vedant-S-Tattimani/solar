@@ -45,7 +45,7 @@ export default function ThankYouPage() {
         </h1>
 
         <p className="mt-5 text-lg sm:text-xl text-[#180102]/80 max-w-2xl mx-auto leading-relaxed">
-          We’ve received your details. A K-Tech engineer will call you within 24 hours, Mon–Sat, 10:30 AM – 7:00 PM.
+          We’ve received your details. A <span className="whitespace-nowrap">K-Tech</span> engineer will call you within 24 hours, Mon–Sat, 10:30 AM – 7:00 PM.
         </p>
       </div>
 

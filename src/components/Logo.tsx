@@ -23,7 +23,7 @@ export default function Logo({ className = '', wordmarkColor = 'text-[#180102]' 
       </div>
 
       {/* Wordmark */}
-      <span className={`font-bold text-[27px] tracking-[-0.055em] leading-none ${wordmarkColor}`}>
+      <span className={`font-bold text-[27px] tracking-[-0.055em] leading-none whitespace-nowrap ${wordmarkColor}`}>
         k-tech solar
       </span>
     </Link>
