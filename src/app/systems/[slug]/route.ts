@@ -14,6 +14,11 @@ export async function GET(
     'solar-storage',
     'whole-home-independence',
     'off-grid-estate',
+    'ground-mounted-plant',
+    'wind-turbine',
+    'solar-water-heater',
+    'heat-pump-residential',
+    'heat-pump-commercial',
   ];
 
   if (!slug || !validSlugs.includes(slug)) {

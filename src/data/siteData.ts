@@ -184,17 +184,17 @@ export const specCategories: SpecCategory[] = [
 ];
 
 export const companyDetails = {
-  name: 'Sunhearth Energy, Inc.',
-  phone: '(555) 010-2026',
-  phoneHref: 'tel:+15550102026',
-  email: 'hello@sunhearth.energy',
-  emailHref: 'mailto:hello@sunhearth.energy',
-  privacyEmail: 'privacy@sunhearth.energy',
-  address: '1280 Solar Way, Pasadena',
-  addressFull: '1280 Solar Way, Pasadena, CA 91101',
-  hours: 'Mon–Sat · 8 am – 7 pm',
-  license: '© 2026 Sunhearth Energy, Inc. · License #000000 · Licensed, bonded & insured',
-  slogan: 'Calm, independent energy for the homes — and the people — you love.',
-  subSlogan: 'Designed and installed by our own crews in Pasadena, CA.',
+  name: 'K-Tech Solar',
+  phone: '+91 89718 74508',
+  phoneHref: 'tel:+918971874508',
+  email: 'ketanentp2018@gmail.com',
+  emailHref: 'mailto:ketanentp2018@gmail.com',
+  privacyEmail: 'ketanentp2018@gmail.com',
+  address: 'No. 831, Congress Road, Tilakwadi, Belgaum 590006',
+  addressFull: 'No. 831, Congress Road, Beside Kiran Aircon, 2nd Railway Gate, Tilakwadi, Belgaum 590006',
+  hours: 'Mon–Sat · 10:30 AM – 7:00 PM',
+  license: '© 2026 K-Tech Solar · Belgaum, Karnataka · All rights reserved',
+  slogan: 'Engineering ₹0 electricity bills, one roof at a time.',
+  subSlogan: 'Designed and installed by certified crews in Belgaum, Karnataka.',
 };
 

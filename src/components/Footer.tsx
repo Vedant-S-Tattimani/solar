@@ -68,7 +68,7 @@ export default function Footer() {
               href="/#quote"
               className="text-[15px] text-[#180102]/80 hover:text-[#f16b46] transition-colors py-0.5"
             >
-              Free design
+              Instant quote
             </Link>
           </div>
 

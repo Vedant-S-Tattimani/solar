@@ -3,8 +3,8 @@ import { CheckCircle2, Clock, Calendar, FileText, ArrowRight, Star } from 'lucid
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Thank you — Sunhearth',
-  description: 'Your free solar and battery design request has been received.',
+  title: 'Thank you — K-Tech Solar',
+  description: 'Your K-Tech Solar quote request has been received.',
 };
 
 export default function ThankYouPage() {
@@ -26,8 +26,8 @@ export default function ThankYouPage() {
     {
       number: '3',
       time: 'Weeks 1–2',
-      title: 'Your design',
-      desc: 'A 3D design, a savings forecast and a clear price — no pressure, no obligation.',
+      title: 'Your quote',
+      desc: 'A transparent quote — hardware, install cost, incentives and 25-year savings side by side.',
       icon: FileText,
     },
   ];
@@ -41,11 +41,11 @@ export default function ThankYouPage() {
         </div>
 
         <h1 className="text-4xl sm:text-5xl lg:text-[60px] font-medium tracking-tight text-[#180102] leading-[1.05]">
-          Thank you! Your free design is on its way.
+          Thank you! Your quote is on its way.
         </h1>
 
         <p className="mt-5 text-lg sm:text-xl text-[#180102]/80 max-w-2xl mx-auto leading-relaxed">
-          We’ve received your details. An engineer — not a call center — will call you within 24 hours, Mon–Sat, 8 am – 7 pm.
+          We’ve received your details. A K-Tech engineer will call you within 24 hours, Mon–Sat, 10:30 AM – 7:00 PM.
         </p>
       </div>
 

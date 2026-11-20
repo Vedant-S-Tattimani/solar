@@ -13,10 +13,10 @@ const figtree = Figtree({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://sunhearth.energy'),
-  title: 'Sunhearth — Solar Panels & Home Battery Installation',
+  metadataBase: new URL('https://k-tech-bgm.vercel.app'),
+  title: 'K-Tech Solar — Own the Power.',
   description:
-    'Solar panels and home batteries — designed and installed by engineers who care about craft. 25-year warranty, NABCEP-certified crew, serving Pasadena and Southern California.',
+    'K-Tech Solar designs smart solar systems that erase your electricity bill for years. Solar, wind, water heating and heat pumps from Belgaum, Karnataka.',
   icons: {
     icon: '/icon.png',
     shortcut: '/favicon.png',
@@ -28,23 +28,23 @@ export const metadata: Metadata = {
     'backup battery',
     'solar storage',
     'energy independence',
-    'Tesla Powerwall',
-    'Enphase',
-    'Pasadena solar',
+    'wind solar hybrid',
+    'solar water heater',
+    'Belgaum solar',
   ],
-  authors: [{ name: 'Sunhearth Energy, Inc.' }],
+  authors: [{ name: 'K-Tech Solar' }],
   openGraph: {
-    title: 'Sunhearth — Solar Panels & Home Battery Installation',
+    title: 'K-Tech Solar — Own the Power.',
     description:
-      'A home that never goes dark. Powered by sunshine. Solar panels and home batteries designed and installed by our own licensed crews.',
+      '₹0 electricity bills for the next 25 years. Solar, wind, water heating and heat pumps — engineered together.',
     url: 'https://k-tech-bgm.vercel.app/',
-    siteName: 'Sunhearth',
+    siteName: 'K-Tech Solar',
     images: [
       {
         url: '/opengraph-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Sunhearth — Solar Panels & Home Battery Installation',
+        alt: 'K-Tech Solar — Own the Power.',
       },
     ],
     locale: 'en_US',
