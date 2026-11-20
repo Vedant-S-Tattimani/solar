@@ -23,6 +23,7 @@
 # misc
 .DS_Store
 *.pem
+.claude/
 
 # debug
 npm-debug.log*
@@ -35,6 +36,10 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# cloudflare & open-next
+.open-next/
+.wrangler/
 
 # typescript
 *.tsbuildinfo
