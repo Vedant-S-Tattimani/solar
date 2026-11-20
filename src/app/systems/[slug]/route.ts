@@ -1,40 +1,14 @@
-import fs from 'fs';
-import path from 'path';
+import { serveSitePage, SYSTEM_SLUGS } from '@/lib/sitePage';
+
+const SLUGS: ReadonlySet<string> = new Set(SYSTEM_SLUGS);
 
 export async function GET(
   request: Request,
-  context: { params: Promise<{ slug: string }> | { slug: string } }
-) {
-  const params = await context.params;
-  const slug = params?.slug;
-
-  const validSlugs = [
-    'backup-essentials',
-    'solar-starter',
-    'solar-storage',
-    'whole-home-independence',
-    'off-grid-estate',
-    'ground-mounted-plant',
-    'wind-turbine',
-    'solar-water-heater',
-    'heat-pump-residential',
-    'heat-pump-commercial',
-  ];
-
-  if (!slug || !validSlugs.includes(slug)) {
-    return new Response('System not found', { status: 404 });
+  context: { params: Promise<{ slug: string }> },
+): Promise<Response> {
+  const { slug } = await context.params;
+  if (!SLUGS.has(slug)) {
+    return new Response('Page not found', { status: 404, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   }
-
-  const filePath = path.join(process.cwd(), 'src', 'app', 'pages_html', `${slug}.html`);
-  if (!fs.existsSync(filePath)) {
-    return new Response('File not found', { status: 404 });
-  }
-
-  const html = fs.readFileSync(filePath, 'utf8');
-  return new Response(html, {
-    headers: {
-      'Content-Type': 'text/html; charset=utf-8',
-    },
-  });
+  return serveSitePage(request, slug);
 }
-

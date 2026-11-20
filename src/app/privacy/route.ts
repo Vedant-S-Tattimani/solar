@@ -1,13 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import { serveSitePage } from '@/lib/sitePage';
 
-export async function GET() {
-  const filePath = path.join(process.cwd(), 'src', 'app', 'pages_html', 'privacy.html');
-  const html = fs.readFileSync(filePath, 'utf8');
-  return new Response(html, {
-    headers: {
-      'Content-Type': 'text/html; charset=utf-8',
-    },
-  });
+export async function GET(request: Request): Promise<Response> {
+  return serveSitePage(request, 'privacy');
 }
-

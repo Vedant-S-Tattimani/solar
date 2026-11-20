@@ -15,12 +15,23 @@ npm run dev
 
 Open <http://localhost:3000>.
 
-For a production build:
+## Deploying to Cloudflare Workers
+
+The site deploys as the Worker `ktech-solar` (see `wrangler.jsonc`), served at `https://ktech-solar.<your-account>.workers.dev`.
 
 ```bash
-npm run build
-npm start
+npx wrangler login     # once
+npm run deploy         # OpenNext build + wrangler deploy
 ```
+
+To test the production build in Cloudflare's local runtime first:
+
+```bash
+npm run build:cf
+npx wrangler dev       # http://localhost:8787
+```
+
+OpenNext recommends building from Linux/WSL; building on Windows works for this site but prints a warning.
 
 ## Pages
 
@@ -59,29 +70,32 @@ Submitting the form on the home page:
 
 ## How it is put together
 
+Everything the browser loads is a static file, so the site needs no filesystem at runtime (required on Cloudflare Workers).
+
 ```
 src/app/
-  route.ts                 GET /  -> serves pages_html/home.html
-  systems/[slug]/route.ts  GET /systems/<slug> -> pages_html/<slug>.html (allow-listed slugs)
-  privacy/, terms/         serve the legal pages
-  cms/[...path]/route.ts   serves product/review data with ?range= byte slicing
-  api/enquiry/route.ts     quote form endpoint
-  pages_html/              pre-rendered HTML for every page
+  route.ts                 GET /                -> public/site/home.html
+  systems/[slug]/route.ts  GET /systems/<slug>  -> public/site/<slug>.html (allow-listed slugs)
+  privacy/, terms/         GET /privacy, /terms -> public/site/*.html
+  api/enquiry/route.ts     quote form endpoint (validation only)
   thank-you/page.tsx       React thank-you page
-src/data/
-  cms-data/                binary product (10 systems) and review collections
-  siteData.ts, systems.ts  data for the React thank-you page, navbar and footer
-public/assets/
-  js/                      client runtime: hydration, animations, page transitions, form
-  media/                   images, fonts and background videos
-public/images/ktech/       install and product photos (JPEG, 512/1024/full widths)
+  not-found.tsx            404 page
+src/lib/sitePage.ts        reads a page through Cloudflare's ASSETS binding (fetch in dev)
+                           and makes link-preview image URLs absolute
+public/
+  site/                    pre-rendered HTML for every page
+  cms/                     binary product (10 systems) and review collections
+  assets/js/               client runtime: hydration, animations, page transitions, form
+  assets/media/            images (WebP), fonts and background videos
+  images/ktech/            install and product photos (JPEG, 512/1024/full widths)
+  _headers                 cache and security headers for static files
 ```
 
 Each page is pre-rendered HTML. When it loads, the runtime in `public/assets/js/` hydrates it and runs the animations and page transitions. The runtime reads page content from three places, and **all three must agree**, or the page will switch back to old text after loading:
 
-1. the HTML in `src/app/pages_html/`, including the handover JSON script at the end of each file;
+1. the HTML in `public/site/`, including the handover JSON script at the end of each file;
 2. text literals inside the modules in `public/assets/js/`;
-3. the binary collections in `src/data/cms-data/` (system cards, system pages and reviews).
+3. the binary collections in `public/cms/` (system cards, system pages and reviews).
 
 Change site text in all three places together rather than editing one HTML file by hand.
 
